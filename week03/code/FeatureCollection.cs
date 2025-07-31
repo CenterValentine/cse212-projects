@@ -2,10 +2,8 @@ public class FeatureCollection
 {
     // TODO Problem 5 - ADD YOUR CODE HERE
     // Create additional classes as necessary
-    public class FeatureCollection
-    {
-        public List<Feature> Features { get; set; }
-    }
+
+        public List<Feature> Features { get; set; } = new List<Feature>();
 
     public class Feature
     {
@@ -15,6 +13,6 @@ public class FeatureCollection
     public class Properties
     {
         public string Place { get; set; }
-        public double Mag { get; set; }
+        public double? Mag { get; set; }
     }
 }
