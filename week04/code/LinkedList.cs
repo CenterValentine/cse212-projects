@@ -1,3 +1,4 @@
+
 using System.Collections;
 
 public class LinkedList : IEnumerable<int>
@@ -65,11 +66,13 @@ public class LinkedList : IEnumerable<int>
     public void RemoveTail()
     {
         // TODO Problem 2
+
     }
 
     /// <summary>
     /// Insert 'newValue' after the first occurrence of 'value' in the linked list.
     /// </summary>
+
     public void InsertAfter(int value, int newValue)
     {
         // Search for the node that matches 'value' by starting at the 
@@ -109,6 +112,7 @@ public class LinkedList : IEnumerable<int>
     public void Remove(int value)
     {
         // TODO Problem 3
+
     }
 
     /// <summary>
@@ -117,6 +121,21 @@ public class LinkedList : IEnumerable<int>
     public void Replace(int oldValue, int newValue)
     {
         // TODO Problem 4
+        // Start at the head
+        Node? curr = _head;
+
+        //Iterate through list to find all instances of oldValue
+        while (curr is not null)
+        {
+            // Boolean check if current node matches old
+            if (curr.Data == oldValue)
+            {
+                // replace the value
+                curr.Data = newValue;
+            }
+            // Move to the next node
+            curr = curr.Next;
+        }
     }
 
     /// <summary>
@@ -147,7 +166,16 @@ public class LinkedList : IEnumerable<int>
     public IEnumerable Reverse()
     {
         // TODO Problem 5
-        yield return 0; // replace this line with the correct yield return statement(s)
+
+var curr = _tail; // Start at the end since this is a backward iteration.
+        while (curr is not null)
+        {
+            // return each item
+            yield return curr.Data; 
+            // Go backward in the linked list
+            curr = curr.Prev; 
+        }
+
     }
 
     public override string ToString()

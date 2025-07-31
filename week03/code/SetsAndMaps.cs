@@ -1,4 +1,28 @@
+// You should assume that the the words are lower case, two characters long, and contain no duplicates
+
+// [am, at, ma, if, fi] then the result would be ["am & ma", "if & fi"]
+
 using System.Text.Json;
+
+//**** ASSIGNMENT 1 *****
+// string[] data = ["he", "eh", "go", "hi", "ih", "hy", "hy", "nos", "te","te","test", "tset"];
+
+// Console.WriteLine("Problem 1: Find Pairs");
+// Console.WriteLine(string.Join(", ", SetsAndMaps.FindPairs(data)));
+
+//**** ASSIGNMENT 2 *****
+
+
+// Console.WriteLine(string.Join(", ", SetsAndMaps.SummarizeDegrees("../../../census.txt")));
+
+
+//**** ASSIGNMENT 3 *****
+
+// Console.WriteLine(SetsAndMaps.IsAnagram("Pig", "Gip"));
+
+// **** ASSIGNMENT 5 *****
+
+
 
 public static class SetsAndMaps
 {
@@ -22,7 +46,30 @@ public static class SetsAndMaps
     public static string[] FindPairs(string[] words)
     {
         // TODO Problem 1 - ADD YOUR CODE HERE
-        return [];
+        // strategy:
+
+
+        var wordSet = new HashSet<string>(words);
+        var wordPairs = new List<string>();
+        var usedWords = new HashSet<string>();
+
+        foreach (var word in words)
+        {
+            var reverseWord = new string(word.Reverse().ToArray());
+            if (wordSet.Contains(reverseWord) && usedWords.Contains(reverseWord) && word != reverseWord && word.Length == 2)
+            {
+                wordPairs.Add($"{word} & {reverseWord}");
+                usedWords.Add(word);
+                wordSet.Remove(reverseWord);
+            }
+            usedWords.Add(word);
+
+
+
+        }
+
+
+        return wordPairs.ToArray();
     }
 
     /// <summary>
@@ -43,6 +90,18 @@ public static class SetsAndMaps
         {
             var fields = line.Split(",");
             // TODO Problem 2 - ADD YOUR CODE HERE
+            if (fields.Length < 4) continue;
+            var degree = fields[3].Trim();
+            if (degrees.ContainsKey(degree))
+            {
+                degrees[degree]++;
+            }
+            else
+            {
+                degrees[degree] = 1;
+            }
+
+
         }
 
         return degrees;
@@ -67,7 +126,47 @@ public static class SetsAndMaps
     public static bool IsAnagram(string word1, string word2)
     {
         // TODO Problem 3 - ADD YOUR CODE HERE
-        return false;
+
+        // remove spaces from the words and convert to lower case
+        var cleanWord1 = word1.Replace(" ", "").ToLower().ToArray();
+        var cleanWord2 = word2.Replace(" ", "").ToLower().ToArray();
+
+        if (cleanWord1.Length != cleanWord2.Length)
+        {
+            return false;
+        }
+
+        var charCount = new Dictionary<char, int>();
+
+        foreach (var l in cleanWord1)
+        {
+            if (charCount.ContainsKey(l))
+            {
+                charCount[l]++;
+            }
+            else
+            {
+                charCount[l] = 1;
+            }
+        }
+
+        foreach (var l in cleanWord2)
+        {
+            if (charCount.ContainsKey(l))
+            {
+                charCount[l]--;
+                if (charCount[l] < 0)
+                {
+                    return false;
+                }
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     /// <summary>
