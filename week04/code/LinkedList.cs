@@ -1,5 +1,6 @@
 
 using System.Collections;
+using System.Transactions;
 
 public class LinkedList : IEnumerable<int>
 {
@@ -34,6 +35,23 @@ public class LinkedList : IEnumerable<int>
     public void InsertTail(int value)
     {
         // TODO Problem 1
+
+        Node newNode = new(value);
+
+        if (_tail is null)
+        {
+            _head = newNode;
+            _tail = newNode;
+        }
+        else
+        {
+            newNode.Prev = _tail;
+            _tail.Next = newNode;
+            _tail = newNode;
+        }
+
+
+
     }
 
 
@@ -66,8 +84,21 @@ public class LinkedList : IEnumerable<int>
     public void RemoveTail()
     {
         // TODO Problem 2
+        if (_tail == _head)
+        {
+            _head = null;
+            _tail = null;
+        }
+        else if (_tail is not null)
+        {
+            _tail.Prev!.Next = null;
+            _tail = _tail.Prev;
+        }
+}
 
-    }
+
+
+
 
     /// <summary>
     /// Insert 'newValue' after the first occurrence of 'value' in the linked list.
@@ -111,8 +142,32 @@ public class LinkedList : IEnumerable<int>
     /// </summary>
     public void Remove(int value)
     {
+        Node current = _head;
         // TODO Problem 3
-
+        while (current != null)
+        {
+            if (current.Data == value) // If the node matches
+            {
+                if (current == _head)
+                {
+                    RemoveHead();
+                }
+                else if (current == _tail)
+                {
+                    RemoveTail();
+                }
+                else
+                {
+                    current.Prev!.Next = current.Next; // Update prior node with current next node
+                    current.Next!.Prev = current.Prev; // update next node with current previous node
+                    current.Prev = null;
+                    current.Next = null;
+                    return; // Stop looping after removal
+            }
+                
+            }
+            current = current.Next;
+        }
     }
 
     /// <summary>
@@ -125,8 +180,10 @@ public class LinkedList : IEnumerable<int>
         Node? curr = _head;
 
         //Iterate through list to find all instances of oldValue
-        while (curr is not null)
+        while (curr is not null)    
         {
+            var next = curr.Next;
+
             // Boolean check if current node matches old
             if (curr.Data == oldValue)
             {
